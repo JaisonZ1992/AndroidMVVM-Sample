@@ -1,4 +1,4 @@
-# MVVM-Sample
+# AndroidMVVM-Sample
 
 Android Sample MVVM project with the latest architectural components
 
