@@ -3,34 +3,39 @@ package com.example.myapplication.ui.splash
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.R
+import com.example.myapplication.di.ViewModelFactory
 import com.example.myapplication.ui.login.LoginActivity
+import com.example.myapplication.ui.post.PostListViewModel
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.TimeUnit
 
 
 class SplashActivity : AppCompatActivity() {
-    private val INTERVAL = 2L
-    private val compositeDisposable = CompositeDisposable()
+
+    private lateinit var splashViewModel: SplashViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-        startMainActivityUsingRxJava()
+        initViewModel()
+        initObservers()
     }
 
-    override fun onStop() {
-        super.onStop()
-        compositeDisposable.dispose()
+    private fun initViewModel() {
+        splashViewModel = ViewModelProvider(this).get(SplashViewModel::class.java)
     }
 
-    private fun startMainActivityUsingRxJava() {
-        compositeDisposable.add(
-            Observable.timer(INTERVAL, TimeUnit.SECONDS)
-                .subscribe {
-                    startApplication()
-                })
+    private fun initObservers() {
+        splashViewModel.initSplashScreen()
+        val observer = Observer<Boolean> {
+            startApplication()
+        }
+        splashViewModel.liveData.observe(this, observer)
     }
 
     private fun startApplication() {
