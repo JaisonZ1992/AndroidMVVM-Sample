@@ -1,7 +1,7 @@
 package com.example.myapplication.di.component
 
 import com.example.myapplication.di.module.NetworkModule
-import com.example.myapplication.ui.PostListViewModel
+import com.example.myapplication.ui.post.PostListViewModel
 import dagger.Component
 import javax.inject.Singleton
 
