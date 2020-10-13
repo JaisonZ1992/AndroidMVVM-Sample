@@ -3,39 +3,41 @@ package com.example.myapplication.ui.splash
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.R
-import com.example.myapplication.di.ViewModelFactory
+import com.example.myapplication.databinding.ActivitySplashBindingImpl
 import com.example.myapplication.ui.login.LoginActivity
-import com.example.myapplication.ui.post.PostListViewModel
-import io.reactivex.Observable
-import io.reactivex.disposables.CompositeDisposable
-import java.util.concurrent.TimeUnit
 
 
 class SplashActivity : AppCompatActivity() {
 
-    private lateinit var splashViewModel: SplashViewModel
-
+    private lateinit var viewModel: SplashViewModel
+    private lateinit var binding: ActivitySplashBindingImpl
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash)
+        initViews()
         initViewModel()
         initObservers()
     }
 
+    private fun initViews() {
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_splash)
+    }
+
     private fun initViewModel() {
-        splashViewModel = ViewModelProvider(this).get(SplashViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(SplashViewModel::class.java)
     }
 
     private fun initObservers() {
-        splashViewModel.initSplashScreen()
-        val observer = Observer<Boolean> {
+        viewModel.initSplashScreen()
+        val observer = Observer<Int> {
             startApplication()
         }
-        splashViewModel.liveData.observe(this, observer)
+        viewModel.loadingVisibility.observe(this, observer)
+        binding.viewModel = viewModel
     }
 
     private fun startApplication() {

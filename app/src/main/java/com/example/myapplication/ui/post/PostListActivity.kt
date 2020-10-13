@@ -21,12 +21,22 @@ class PostListActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
+        initViews()
+        initViewModel()
+        initObservers()
+    }
 
+    private fun initViews() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_post_list)
         binding.postList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+    }
 
+    private fun initViewModel() {
+        //ViewModelFactory is used because PostListViewModel requires custom arguments which is not present in default constructor
         viewModel = ViewModelProvider(this, ViewModelFactory(this)).get(PostListViewModel::class.java)
+    }
 
+    private fun initObservers() {
         viewModel.errorMessage.observe(this, Observer {
                 errorMessage -> if(errorMessage != null) showError(errorMessage) else hideError()
         })
