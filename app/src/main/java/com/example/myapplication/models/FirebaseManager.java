@@ -1,11 +1,11 @@
 package com.example.myapplication.models;
 
-public class User {
+public class FirebaseManager {
 
     private FirebaseAnalytics firebaseAnalytics;
 
 
-    public User() {
+    public FirebaseManager() {
         this.firebaseAnalytics = FirebaseAnalytics.getInstance();
     }
 
